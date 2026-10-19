@@ -1,0 +1,16 @@
+# GEO_2DBA core (training / evaluation)
+torch>=2.1
+torchvision>=0.16
+numpy
+opencv-python
+pandas
+scikit-learn
+einops
+tqdm
+pillow
+matplotlib
+huggingface_hub
+
+# Pre-processing extras (depth + mask inference, see preprocess/README.md)
+transformers
+safetensors
