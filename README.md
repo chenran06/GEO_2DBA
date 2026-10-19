@@ -74,21 +74,21 @@ CVACT/<root>/ANU_data_small/         VIGOR/<root>/<city>/
 
 ## Released checkpoints
 
-Validation metrics in the file names follow each legacy protocol
-(KITTI/RobotCar: `loc_2_mean` on test1; CVACT/VIGOR: `translation_mean`).
-All of the checkpoints below are bundled under [`checkpoints/`](checkpoints/).
+One checkpoint per task, bundled under [`checkpoints/`](checkpoints/) as
+`model.pt`; the `original_name.txt` beside each records the original
+training filename.
 
-| Dataset | Config | Checkpoint | Val metric |
-|---|---|---|---|
-| KITTI 10° | `--rotation_range 10` | `kitti10/epoch_7_step_153_0.6334873647582089_model.pt` | 0.633 m |
-| KITTI 180° | `--rotation_range 180` | `kitti180/epoch_12_step_1.7016808789135593_model.pt` | 1.702 m |
-| RobotCar 10° | `--rotation_range 10` | `robotcar10/epoch_95_step_0.7338818706212855_model.pt` | 0.734 m |
-| RobotCar 180° | `--rotation_range 180` | `robotcar180/epoch_50_step_1.7676119810193913_model.pt` | 1.768 m |
-| CVACT known-ori | `--rotation_range 0` | `cvact/known_ori/2_model_5.380451.pt` | 5.380 m |
-| VIGOR same-area 0° | `--split samearea --rotation_range 0` | `vigor/samearea/known_ori/0_model_2.531872.pt` | 2.532 m |
-| VIGOR same-area 180° | `--split samearea --rotation_range 180` | `vigor/samearea/unknown_ori/18_model_2.381034.pt` | 2.381 m |
-| VIGOR cross-area 0° | `--split crossarea --rotation_range 0` | `vigor/crossarea/known_ori/0_model_3.635441.pt` | 3.635 m |
-| VIGOR cross-area 180° | `--split crossarea --rotation_range 180` | `vigor/crossarea/unknown_ori/0_model_4.219329.pt` | 4.219 m |
+| Dataset | Config | Checkpoint |
+|---|---|---|
+| KITTI 10° | `--rotation_range 10` | `kitti10/model.pt` |
+| KITTI 180° | `--rotation_range 180` | `kitti180/model.pt` |
+| RobotCar 10° | `--rotation_range 10` | `robotcar10/model.pt` |
+| RobotCar 180° | `--rotation_range 180` | `robotcar180/model.pt` |
+| CVACT known-ori | `--rotation_range 0` | `cvact/known_ori/model.pt` |
+| VIGOR same-area 0° | `--split samearea --rotation_range 0` | `vigor/samearea/known_ori/model.pt` |
+| VIGOR same-area 180° | `--split samearea --rotation_range 180` | `vigor/samearea/unknown_ori/model.pt` |
+| VIGOR cross-area 0° | `--split crossarea --rotation_range 0` | `vigor/crossarea/known_ori/model.pt` |
+| VIGOR cross-area 180° | `--split crossarea --rotation_range 180` | `vigor/crossarea/unknown_ori/model.pt` |
 
 Evaluate a checkpoint (all three solvers, both depth-mask modes):
 
@@ -128,7 +128,8 @@ python train_vigor.py --split crossarea --rotation_range 180
 ```
 
 Per epoch the scripts evaluate every split and store
-`epoch_<e>_step_<loc_e2e_mean>_model.pt` (+ `_optimizer.pt`).
+`epoch_<e>_step_<s>_<loc_e2e_mean>_model.pt` (+ `_optimizer.pt`), where
+`<s>` is the number of training steps of that epoch.
 
 **Logged metrics.** Training reports all three solvers per step:
 `loc_e2e`/`yaw_e2e`, `loc_bisection`/`yaw_bisection`, `loc_ransac`/`yaw_ransac`,
@@ -172,11 +173,7 @@ python -m visualization.run_figures --ckpt <matcher.pt> --names <sample_name>
 `--data-root` (default from `config.ini`), `--split` (default
 `splits/kitti/test1_files.txt`), `--out-root` (default `figures/`,
 resumable) and `--gpu` are overridable. `--ckpt` defaults to the bundled
-best KITTI checkpoint
-(`checkpoints/kitti10/epoch_7_step_153_0.6334873647582089_model.pt`,
-loc 0.633 m); the paper figures were generated with the also-bundled
-`epoch_32_step_153_0.6781100631905733_model.pt`, which can be passed
-explicitly to reproduce them.
+KITTI checkpoint (`checkpoints/kitti10/model.pt`).
 Every sample folder also receives
 `sat_input.png`, `grd_input.png` and `data.npz` (all matching/solver
 arrays, reusable by custom plots). The two stage-visualisation constants

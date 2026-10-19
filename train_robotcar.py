@@ -385,6 +385,7 @@ def run_split(name, model, loader, device, args, settings, optimizer,
 
     if training:
         a = acc['with']
+        run_split.steps = step + 1
         metrics = {'loc_e2e_mean':
                        np.mean(a['loc_e2e']) if a['loc_e2e'] else float('nan')}
         if args.with_procrustes:
@@ -503,10 +504,12 @@ def main():
         torch.cuda.empty_cache()
 
         loc_e2e_mean = test1_metrics['loc_e2e_mean']
-        model_path = ckpt_dir / f'epoch_{epoch}_step_{loc_e2e_mean}_model.pt'
+        model_path = ckpt_dir / \
+            f'epoch_{epoch}_step_{run_split.steps}_{loc_e2e_mean}_model.pt'
         torch.save(model.state_dict(), model_path)
         torch.save(optimizer.state_dict(),
-                   ckpt_dir / f'epoch_{epoch}_step_{loc_e2e_mean}_optimizer.pt')
+                   ckpt_dir /
+                   f'epoch_{epoch}_step_{run_split.steps}_{loc_e2e_mean}_optimizer.pt')
         logger.info('Saved checkpoint: %s', model_path)
 
 

@@ -57,8 +57,7 @@ def parse_args():
                    help='KITTI dataset root (default: config.ini)')
     p.add_argument('--ckpt',
                    default=str(GEO_ROOT / 'checkpoints' / 'kitti10'
-                               / 'epoch_7_step_153_0.6334873647582089'
-                               '_model.pt'),
+                               / 'model.pt'),
                    help='matcher checkpoint (.pt)')
     p.add_argument('--split',
                    default=str(GEO_ROOT / 'splits' / 'kitti'

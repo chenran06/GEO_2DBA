@@ -4,6 +4,7 @@ checkpoints_smoke/
 logs/
 logs_smoke/
 figures/
+original_name.txt
 
 # Python
 __pycache__/
